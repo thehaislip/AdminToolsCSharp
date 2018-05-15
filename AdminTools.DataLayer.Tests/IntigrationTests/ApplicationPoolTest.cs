@@ -9,6 +9,7 @@ namespace AdminTools.Tests
     public class ApplicationPoolTest
     {
         private IISManager _iis;
+        private CredentialsHelper creds;
         public ApplicationPoolTest()
         {
             _iis = new IISManager();
@@ -16,23 +17,23 @@ namespace AdminTools.Tests
 
         [SetUp]
         public void Setup() {
-
+            creds = new CredentialsHelper();
         }
 
         [Test]
         public void GetApplicationPoolsReturnsANonEmptyList() {
-            CollectionAssert.IsNotEmpty(_iis.GetApplicationPools("itpr1web23"));
+            CollectionAssert.IsNotEmpty(_iis.GetApplicationPools("itpr1web23",creds.UserName,creds.Password));
         }
 
         [Test]
         public void GetApplicationPoolsReturnsANonEmptyListMultipleServers()
         {
-            CollectionAssert.IsNotEmpty(_iis.GetApplicationPools("itpr1web23,itpr1web34"));
+            CollectionAssert.IsNotEmpty(_iis.GetApplicationPools("itpr1web23,itpr1web34", creds.UserName, creds.Password));
         }
 
         [Test]
         public void GetAppPoolsReturnNonEmptySites() {
-            CollectionAssert.IsNotEmpty(_iis.GetApplicationPools("itpr1web23").SelectMany(e => e.Sites));
+            CollectionAssert.IsNotEmpty(_iis.GetApplicationPools("itpr1web23", creds.UserName, creds.Password).SelectMany(e => e.Sites));
         }
 
 

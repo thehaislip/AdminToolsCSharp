@@ -12,6 +12,7 @@ namespace AdminTools.Tests.IntigrationTests
     {
 
         private AppPoolRepository _iis;
+        private CredentialsHelper creds;
         public AppPoolRepositoryTest()
         {
             _iis = new AppPoolRepository();
@@ -19,7 +20,7 @@ namespace AdminTools.Tests.IntigrationTests
 
         [Test]
         public void GetAppPoolReturnsNonEmpyListOfServer() {
-            var list = _iis.GetApplicationPools(new[] { "itpr1web23", "itpr1web34" });
+            var list = _iis.GetApplicationPools(new[] { "itpr1web23", "itpr1web34" }, creds.UserName, creds.Password);
             CollectionAssert.AllItemsAreInstancesOfType(list, typeof(Server));
         }
 
@@ -27,7 +28,7 @@ namespace AdminTools.Tests.IntigrationTests
         [Test]
         public void GetAppPoolReturnsListOfServersWithNonEmpyAppPools()
         {
-            var list = _iis.GetApplicationPools(new[] { "itpr1web23", "itpr1web34" });
+            var list = _iis.GetApplicationPools(new[] { "itpr1web23", "itpr1web34" }, creds.UserName, creds.Password);
             CollectionAssert.IsNotEmpty(list.Select(e => e.ApplicationPools));
         }
     }

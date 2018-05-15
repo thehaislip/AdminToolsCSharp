@@ -23,12 +23,12 @@ namespace AdminTools.DataLayer
         {
          
         }
-        public  IEnumerable<ApplicationPool> GetApplicationPools(string server)
+        public  IEnumerable<ApplicationPool> GetApplicationPools(string server,string username,string password)
         {
             var sb = new StringBuilder();
             var list = new List<ApplicationPool>();
 
-            sb.Append("$password = ConvertTo-SecureString password -AsPlainText -Force; $Cred = New-Object System.Management.Automation.PSCredential (\"user\", $password);");
+            sb.Append($"$password = ConvertTo-SecureString {password} -AsPlainText -Force; $Cred = New-Object System.Management.Automation.PSCredential (\"{username}\", $password);");
             sb.Append($"invoke-command -Credential $Cred -computername {server} -scriptblock {{import-module WebAdministration; get-childitem -Path IIS:\\AppPools | select name,state ;}};");
 
             list = PowerShellCommands<ApplicationPool>.ExecuteScript(sb.ToString()).ToList();
